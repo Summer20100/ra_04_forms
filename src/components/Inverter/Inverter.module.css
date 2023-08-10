@@ -1,0 +1,47 @@
+.container {
+  margin-top: 5rem;
+  background-color: #dbdbdb;
+  border-radius: 15px;
+  display: flex;
+  height: 50vh;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+}
+
+.colorHEX,
+.colorRGB {
+  height: 50px;
+  width: 170px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+.colorHEX {
+  color: black;
+  text-align: center;
+  outline: none;
+  border: none;
+}
+
+.backdround {
+  background-color: black;
+  opacity: 0.3;
+  position: absolute;
+  height: inherit;
+  width: inherit;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+.colorRGB {
+  color: white;
+  position: relative;
+  z-index: 0;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
