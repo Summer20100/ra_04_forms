@@ -1,8 +1,7 @@
-# React + Vite
+# Course REACT JS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 04_forms
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. [Hex2rgb](./src/components/Inverter/)
+2. [Steps](./src/components/Steps/)
+3. [Photo](./src/components/Photo/)
