@@ -14,9 +14,7 @@ const Steps = () => {
 
   let currentMonth = new Date().getMonth() + 1
   if (currentMonth < 10) currentMonth = '0' + currentMonth;
-
   let currentYear = new Date().getFullYear()
-
   let currentDateInput = currentYear + "-" + currentMonth + "-" + currentDay;
   let currentDateText = currentDay + "." + currentMonth + "." + currentYear;
 
@@ -26,7 +24,6 @@ const Steps = () => {
   })
 
   const [text, setText] = useState('')
-
   const formatDate = (qwert) => {
     let day = qwert.target.value.substring(8, 10)
     let month = qwert.target.value.substring(5, 7)
@@ -40,7 +37,6 @@ const Steps = () => {
     let day = ev.target.value.substring(8, 10)
     let month = ev.target.value.substring(5, 7)
     let year = ev.target.value.substring(0, 4)
-
     setDate({
       currentDateText: day + '.' + month + '.' + year,
       currentDateInput: year + '-' + month + '-' + day
@@ -51,8 +47,8 @@ const Steps = () => {
     ev.preventDefault()
     setText(ev.target.value)
   }
-
-  const summedObjectsArray = Object.values(list.reduce((accumulator, obj) => {
+ 
+  const summedObjectsArray = Object.values([...list].reduce((accumulator, obj) => {
     if (!accumulator[obj.dateInput]) {
       accumulator[obj.dateInput] = { ...obj };
     } else {
@@ -63,14 +59,20 @@ const Steps = () => {
 
   const onListAdd = (ev) => {
     ev.preventDefault()
-    setList([...summedObjectsArray, { id: new Date().getTime(), date: date.currentDateText, dateInput: date.currentDateInput, text: parseInt(!text ? 0 : text) }])
+    setList([...list, { id: new Date().getTime(), date: date.currentDateText, dateInput: date.currentDateInput, text: parseInt(!text ? 0 : text) }])
     setText('')
   }
 
+  const onListAdd01 = (ev) => {
+    ev.preventDefault()
+    setList([...summedObjectsArray])
+    setText('')
+  }
+  
   const onEnter = (ev) => {
     if (ev.key === 'Enter') {
       ev.preventDefault()
-      setList([...summedObjectsArray, { id: new Date().getTime(), date: date.currentDateText, dateInput: date.currentDateInput, text: parseInt(!text ? 0 : text) }])
+      setList([...list, { id: new Date().getTime(), date: date.currentDateText, dateInput: date.currentDateInput, text: parseInt(!text ? 0 : text) }])
       setText('')
     }
   }
@@ -104,7 +106,7 @@ const Steps = () => {
     const dateB = new Date(b.dateInput);
     return dateB - dateA;
   }
-  let newArray = list.sort(compareDates)
+  list.sort(compareDates)
 
   return (
     <Routes>
@@ -117,9 +119,10 @@ const Steps = () => {
             </div>
             <div className={ s.element }>
               <label htmlFor='inputNumber' style={{fontSize: '13px', padding: '15px 0'}}>Пройдено км</label>
-              <input id='inputNumber' type="number" value={text} className={s.inputText} onChange={onText} placeholder='Введите кг' onKeyPress={onEnter} />
+              <input id='inputNumber' type="number" value={text} className={s.inputText} onChange={onText} placeholder='Введите км' onKeyPress={onEnter} />
             </div>
             <input type="submit" className={s.inputBtn} onClick={onListAdd} value="OK" />
+            <input type="button" className={s.inputBtn} onClick={onListAdd01} value="SUM" />
           </form>
           <div className="todolist">
             <div className={ s.title } >
