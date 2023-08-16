@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import TodoList from './TodoList/TodoList'
 import s from './Steps.module.css'
 
@@ -14,7 +14,9 @@ const Steps = () => {
 
   let currentMonth = new Date().getMonth() + 1
   if (currentMonth < 10) currentMonth = '0' + currentMonth;
+
   let currentYear = new Date().getFullYear()
+
   let currentDateInput = currentYear + "-" + currentMonth + "-" + currentDay;
   let currentDateText = currentDay + "." + currentMonth + "." + currentYear;
 
@@ -24,6 +26,7 @@ const Steps = () => {
   })
 
   const [text, setText] = useState('')
+
   const formatDate = (qwert) => {
     let day = qwert.target.value.substring(8, 10)
     let month = qwert.target.value.substring(5, 7)
@@ -37,12 +40,15 @@ const Steps = () => {
     let day = ev.target.value.substring(8, 10)
     let month = ev.target.value.substring(5, 7)
     let year = ev.target.value.substring(0, 4)
+
     setDate({
       currentDateText: day + '.' + month + '.' + year,
       currentDateInput: year + '-' + month + '-' + day
     })
   }
 
+  let summedObject = []
+  
   const onText = (ev) => {
     ev.preventDefault()
     setText(ev.target.value)
@@ -57,17 +63,26 @@ const Steps = () => {
     return accumulator;
   }, {}));
 
+  // console.log(summedObjectsArray)
+
   const onListAdd = (ev) => {
     ev.preventDefault()
-    setList([...list, { id: new Date().getTime(), date: date.currentDateText, dateInput: date.currentDateInput, text: parseInt(!text ? 0 : text) }])
+    setList(
+      Object.values([...list, { id: new Date().getTime(), date: date.currentDateText, dateInput: date.currentDateInput, text: parseInt(!text ? 0 : text) }].reduce((accumulator, obj) => {
+        if (!accumulator[obj.dateInput]) {
+          accumulator[obj.dateInput] = { ...obj };
+        } else {
+          accumulator[obj.dateInput].text += obj.text;
+        }
+        return accumulator;
+      }, {}))
+
+      // [...list, { id: new Date().getTime(), date: date.currentDateText, dateInput: date.currentDateInput, text: parseInt(!text ? 0 : text) }]
+    )
     setText('')
   }
 
-  const onListAdd01 = (ev) => {
-    ev.preventDefault()
-    setList([...summedObjectsArray])
-    setText('')
-  }
+  // console.log(summedObjectsArray)
   
   const onEnter = (ev) => {
     if (ev.key === 'Enter') {
@@ -108,6 +123,10 @@ const Steps = () => {
   }
   list.sort(compareDates)
 
+  useEffect(() => {
+    console.log(text)
+  }, [text])
+
   return (
     <Routes>
       <Route path='/steps' element={
@@ -122,7 +141,6 @@ const Steps = () => {
               <input id='inputNumber' type="number" value={text} className={s.inputText} onChange={onText} placeholder='Введите км' onKeyPress={onEnter} />
             </div>
             <input type="submit" className={s.inputBtn} onClick={onListAdd} value="OK" />
-            <input type="button" className={s.inputBtn} onClick={onListAdd01} value="SUM" />
           </form>
           <div className="todolist">
             <div className={ s.title } >
